@@ -1,6 +1,6 @@
 package com.crezam.endpoints.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -9,10 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class JobPosting {
@@ -25,6 +23,22 @@ public class JobPosting {
 	private String company;
 	private String salaryRange;
 	private List<String> requiredSkills;
-	private Date applicationDeadline;
+	private LocalDate applicationDeadline;
+	
+	public JobPosting() {
+		
+	}
+	public JobPosting(String titile, String description, String location, String company, String salaryRange,
+			List<String> requiredSkills, LocalDate applicationDeadline) {
+		this.titile = titile;
+		this.description = description;
+		this.location = location;
+		this.company = company;
+		this.salaryRange = salaryRange;
+		this.requiredSkills = requiredSkills;
+		this.applicationDeadline = applicationDeadline;
+	}
+	
+	
 
 }
