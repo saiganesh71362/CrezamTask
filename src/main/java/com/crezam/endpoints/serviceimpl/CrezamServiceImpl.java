@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.crezam.endpoints.entity.JobPosting;
+import com.crezam.endpoints.exceptionhandle.IdNotFoundException;
+import com.crezam.endpoints.exceptionhandle.JobNotFoundException;
 import com.crezam.endpoints.repositoy.CrezamRepository;
 import com.crezam.endpoints.service.CrezamService;
 
@@ -25,30 +27,31 @@ public class CrezamServiceImpl implements CrezamService {
 	}
 
 	@Override
-	public JobPosting getJobPostingById(Long id) throws Exception {
+	public JobPosting getJobPostingById(Long id) throws JobNotFoundException {
 
 		JobPosting orElse = crezamRepository.findById(id).orElse(null);
 		if (orElse != null) {
 			return orElse;
 		}
 
-		throw new Exception();
+		throw new IdNotFoundException("Id Not Found :" + id);
 	}
 
 	@Override
-	public JobPosting createNewJobPosting(JobPosting jobPosting) throws Exception {
+	public JobPosting createNewJobPosting(JobPosting jobPosting) throws JobNotFoundException {
 		if (jobPosting != null) {
 			JobPosting save = crezamRepository.save(jobPosting);
 			return save;
 		}
 
-		throw new Exception();
+		throw new JobNotFoundException("New Job Creation Faild");
 	}
 
 	@Override
-	public JobPosting updateJobPostingById(Long id, JobPosting jobPosting) throws Exception {
+	public JobPosting updateJobPostingById(Long id, JobPosting jobPosting) throws JobNotFoundException {
 		if (crezamRepository.existsById(id)) {
-			JobPosting existingJob = crezamRepository.findById(id).orElseThrow(() -> new Exception("No Book Id"));
+			JobPosting existingJob = crezamRepository.findById(id)
+					.orElseThrow(() -> new IdNotFoundException("Id Not Found"));
 			existingJob.setTitile(jobPosting.getTitile());
 			existingJob.setDescription(jobPosting.getDescription());
 			existingJob.setLocation(jobPosting.getLocation());
@@ -59,18 +62,18 @@ public class CrezamServiceImpl implements CrezamService {
 
 			return crezamRepository.save(existingJob);
 		} else {
-			throw new Exception();
+			throw new IdNotFoundException("Id Not Found :" + id);
 		}
 	}
 
 	@Override
-	public boolean deleteJobPostingById(Long id) throws Exception {
+	public boolean deleteJobPostingById(Long id) throws JobNotFoundException {
 		Optional<JobPosting> findById = crezamRepository.findById(id);
 		if (findById.isPresent()) {
 			crezamRepository.deleteById(id);
 			return true;
 		}
-		throw new Exception();
+		throw new IdNotFoundException("Id Not Found :" + id);
 
 	}
 

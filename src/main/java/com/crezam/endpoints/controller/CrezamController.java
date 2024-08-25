@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crezam.endpoints.entity.JobPosting;
+import com.crezam.endpoints.exceptionhandle.IdNotFoundException;
 import com.crezam.endpoints.serviceimpl.CrezamServiceImpl;
 
 @RestController
@@ -39,7 +40,7 @@ public class CrezamController {
 	}
 
 	@GetMapping("getJob/{id}")
-	public ResponseEntity<JobPosting> getJobById(@PathVariable Long id) throws Exception {
+	public ResponseEntity<JobPosting> getJobById(@PathVariable Long id) throws IdNotFoundException {
 		logger.info("Received Request To Get Job By ID: {}", id);
 		JobPosting jobPostingById = crezamServiceImpl.getJobPostingById(id);
 		logger.info("Successfully Retrieved Job With ID: {}", id);
@@ -47,7 +48,7 @@ public class CrezamController {
 	}
 
 	@PostMapping("/createNewJob")
-	public ResponseEntity<JobPosting> createNewJob(@RequestBody JobPosting jobPosting) throws Exception {
+	public ResponseEntity<JobPosting> createNewJob(@RequestBody JobPosting jobPosting) throws IdNotFoundException {
 		logger.info("Request Received To Create A New Job: {}");
 		JobPosting newJobPosting = crezamServiceImpl.createNewJobPosting(jobPosting);
 		logger.info("Job Created Successfully: {}");
@@ -66,7 +67,7 @@ public class CrezamController {
 	}
 
 	@DeleteMapping("/deleteBook/{id}")
-	public ResponseEntity<Boolean> deleteJobId(@PathVariable Long id) throws Exception {
+	public ResponseEntity<Boolean> deleteJobId(@PathVariable Long id) throws IdNotFoundException {
 		logger.info("Received Request To Delete Job with ID: {}", id);
 		boolean deleteJobyId = crezamServiceImpl.deleteJobPostingById(id);
 		logger.info("Successfully Deleted Job With ID: {}", id);
